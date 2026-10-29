@@ -1,0 +1,26 @@
+# ---------- Python ----------
+pytest-mes/.venv/
+.venv/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# ---------- Java / Maven ----------
+MES-Springboot-master/mes/target/
+*.class
+*.jar
+*.war
+
+# ---------- IDE ----------
+.idea/
+*.iml
+.vscode/
+
+# ---------- 系统与日志 ----------
+.DS_Store
+Thumbs.db
+*.log
+
+# ---------- 说明 ----------
+# pytest-mes/reports/ 是测试报告，作为证据保留，不忽略
+# MES-Springboot-master/scripts/sql/ 建库脚本保留

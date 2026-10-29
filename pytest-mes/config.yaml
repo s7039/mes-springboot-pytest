@@ -1,0 +1,16 @@
+# 被测环境
+base_url: http://localhost:9090
+timeout: 10
+
+# 登录账号（需具备 user:add 权限，admin 默认具备）
+login:
+  username: admin
+  password: "123"
+
+# 数据库（用于造数据与落库校验）
+db:
+  host: 127.0.0.1
+  port: 3306
+  user: root
+  password: root
+  database: sparchetype

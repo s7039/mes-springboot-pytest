@@ -1,0 +1,20 @@
+server:
+  session-timeout: 1800
+spring:
+  profiles:
+    active: dev
+  cache:
+    # 会话/缓存走 Redis（需先启动 Redis：.tools/redis/redis-server.exe）
+    # 想退回内存会话：把下面改成 ehcache，并确保 ehcache 配置生效
+    type: redis
+    ehcache:
+      config: classpath:config/ehcache.xml
+
+swagger:
+  controller: com.wangziyang.mes
+  description: MES接口管理
+  enable: true
+  license: wangziyang
+  licenseUrl: https://gitee.com/wangziyangyang/MES-Sprongboot
+  title: 王子杨的API 管理
+  version: 1.0.0
