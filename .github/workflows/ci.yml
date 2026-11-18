@@ -41,6 +41,9 @@ jobs:
         run: mvn -f MES-Springboot-master/mes/pom.xml -B clean package -DskipTests
 
       - name: 启动服务
+        env:
+          # CI 只有 2 核，关掉 com.wangziyang 的 debug SQL 日志，减少 IO 与日志体积（实测 DEBUG 行 14 -> 0）
+          LOGGING_LEVEL_COM_WANGZIYANG: info
         run: |
           nohup java -jar MES-Springboot-master/mes/target/*.jar > app.log 2>&1 &
           for i in $(seq 1 60); do
