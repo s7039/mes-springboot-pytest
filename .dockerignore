@@ -1,0 +1,8 @@
+# 构建上下文里用不到的东西：git 历史、pytest 工程与虚拟环境、本地构建产物、IDE
+.git/
+.github/
+pytest-mes/
+MES-Springboot-master/mes/target/
+MES-Springboot-master/.idea/
+**/__pycache__/
+*.log

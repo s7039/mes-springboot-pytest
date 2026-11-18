@@ -1,0 +1,69 @@
+name: ci
+
+on:
+  push:
+    branches: [main, "feat/**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  mes-test:
+    runs-on: ubuntu-latest
+    continue-on-error: true          # 先观察两次，稳定后删掉这行
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: sparchetype
+        ports: ["3306:3306"]
+        options: >-
+          --health-cmd="mysqladmin ping -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=20
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 导入数据库
+        run: mysql -h127.0.0.1 -uroot -proot sparchetype < MES-Springboot-master/scripts/sql/MES-TEXT.sql
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"        # 已确认 MES-Springboot-master/mes/pom.xml 里 java.version=17
+          cache: maven
+
+      - name: 打包
+        run: mvn -f MES-Springboot-master/mes/pom.xml -B clean package -DskipTests
+
+      - name: 启动服务
+        run: |
+          nohup java -jar MES-Springboot-master/mes/target/*.jar > app.log 2>&1 &
+          for i in $(seq 1 60); do
+            if curl -sf http://localhost:9090/ > /dev/null; then echo "up after ${i}s"; break; fi
+            sleep 2
+          done
+          tail -n 50 app.log
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: 接口测试
+        run: |
+          pip install -r pytest-mes/requirements.txt
+          pytest pytest-mes -q
+
+      - name: 失败时上传日志与报告
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mes-logs
+          path: |
+            app.log
+            pytest-mes/reports/
