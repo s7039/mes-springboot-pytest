@@ -1,5 +1,7 @@
 # MES-Springboot 项目集
 
+![ci](https://github.com/s7039/mes-springboot-pytest/actions/workflows/ci.yml/badge.svg)
+
 包含两个项目：**MES 制造执行系统**（二次开发）与**接口自动化测试工程**（Python）。
 
 

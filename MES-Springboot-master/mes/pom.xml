@@ -175,6 +175,12 @@
 
     <build>
         <plugins>
+            <!-- 打包成可执行 jar：父 POM 只在 pluginManagement 里定义了 repackage，
+                 不在这里声明就不会绑定到 package 阶段，产物会缺 Main-Class 且不含依赖 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
             <!-- Docker 插件 -->
             <plugin>
                 <!-- 三坐标 -->
