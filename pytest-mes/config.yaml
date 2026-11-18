@@ -1,6 +1,7 @@
 # 被测环境
 base_url: http://localhost:9090
-timeout: 10
+# 20 并发的锁定用例在 2 核 CI runner 上单个请求会排队到 10s 以上（ReadTimeout），放宽到 30s
+timeout: 30
 
 # 登录账号（需具备 user:add 权限，admin 默认具备）
 login:
