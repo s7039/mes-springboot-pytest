@@ -9,7 +9,6 @@ on:
 jobs:
   mes-test:
     runs-on: ubuntu-latest
-    continue-on-error: true          # 先观察两次，稳定后删掉这行
     services:
       mysql:
         image: mysql:8.0
